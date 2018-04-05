@@ -1,0 +1,12 @@
+@model SportsDirect.Models.Users
+<li class="nav-link nav-link-edit">
+    <i class="far fa-shopping-cart"></i>
+    @if (Model.ShoppingCart.Count < 1)
+    {
+        <p>BAG IS EMPTY</p>
+    }
+    else
+    {
+        <p>@Model.ShoppingCart.Count item(s)</p>
+    }
+</li>

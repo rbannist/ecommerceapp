@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.Extensions.Options
+@using System.Security.Claims;
+
+@inject IOptions<AzureAdB2COptions> AzureAdB2COptions
+
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item dropdown nav-link-username-edit">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="far fa-user"></i>
+            @User.Identity.Name
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a href="" class="dropdown-item">Shopping cart</a>
+            <a href="" class="dropdown-item">My orders</a>
+            <a asp-area="" asp-controller="Account" asp-action="EditProfile" class="dropdown-item">Change my details</a>
+            <div class="dropdown-divider"></div>
+            <a asp-area="" asp-controller="Account" asp-action="SignOut" class="dropdown-item">Sign out</a>
+        </div>
+    </li>
+}
+else
+{
+        <li class="nav-link">
+            <a asp-area="" asp-controller="Account" asp-action="SignIn" class="btn btn-light nav-link-edit">SIGN IN | CREATE ACCOUNT</a>
+        </li>
+}

@@ -1,0 +1,159 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using System.Security.Claims;
+@using SportsDirect.Models;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SportsDirect.com - @ViewData["Title"]</title>
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--Font-Awesome icons-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+    <!--Navbar-------------------------------------------------------------------------------------------------------->
+    <header>
+        <!--Insert top account grey bar here-->
+        <nav class="navbar navbar-expand-lg bg-white">
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search product or brand" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <div class="align-items-center">
+                <img src="images/sportsdirect2016.png" />
+            </div>
+            <ul class="navbar-nav float-md-right">
+                <!--Shopping cart data fetch from Cosmos-->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("SportsDirectWebsite", "Users", d => d.UserId == LoggedInUserId);
+                    @await Html.PartialAsync("_ShoppingCart", UserData)
+                }
+                else
+                {
+                    <li><i class="far fa-shopping-cart"></i>BAG IS EMPTY</li>
+                }
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-lg bg-primary">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto text-white text-center">
+                    <li class="nav-item">
+                        <a href="" class="nav-link">MENS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">LADIES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">KIDS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">FOOTBALL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">RUNNING</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">OUTDOOR</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">ACCESSORIES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">SPORTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">BRANDS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="" class="nav-link">OUTLET</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!--Body content is rendered below--------------------------------------------------------------------------------------->
+    @RenderBody()
+
+    <!--Footer content------------------------------------------------------------------------------------------------------->
+    <footer>
+        <!--Subscribe------------------------------------------------------------------------------------------------------------>
+        <div class="container-fluid bg-light">
+            <div class="container text-center">
+                <h2>
+                    Subscribe to Sports Direct
+                </h2>
+                <p>Sign up now to get exclusive product updates and information</p>
+                <form class="form-inline" name="Subscribe" id="Subscribe" method="post" action="javascript:subscribe();">
+                    <input class="form-control mr-sm-2" type="email" placeholder="Enter your email address" aria-label="Email">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <!--Company info-->
+        <div class="container">
+            <div class="pt-4 my-md-5 pt-md-5 border-top">
+                <div class="row">
+                    <div class="col-12 col-md">
+                        <img class="mb-2" src="~/images/sportsdirect2016.png" alt="" width="60" height="24">
+                        <small class="d-block mb-3 text-muted">&copy; 2018</small>
+                    </div>
+                    <div class="col-6 col-md">
+                        <h5>Popular links</h5>
+                        <ul class="list-unstyled text-small">
+                            <li><a class="text-muted" href="#">Mens' trainers</a></li>
+                            <li><a class="text-muted" href="#">Kids' trainers</a></li>
+                            <li><a class="text-muted" href="#">Roller shoes</a></li>
+                            <li><a class="text-muted" href="#">Ladies' trainers</a></li>
+                            <li><a class="text-muted" href="#">Sketchers</a></li>
+                            <li><a class="text-muted" href="#">Football</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-md">
+                        <h5>Shopping</h5>
+                        <ul class="list-unstyled text-small">
+                            <li><a class="text-muted" href="#">My account</a></li>
+                            <li><a class="text-muted" href="#">Delivery</a></li>
+                            <li><a class="text-muted" href="#">Pre-orders</a></li>
+                            <li><a class="text-muted" href="#">Ways to pay</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-md">
+                        <h5>Help</h5>
+                        <ul class="list-unstyled text-small">
+                            <li><a class="text-muted" href="#">FAQ</a></li>
+                            <li><a class="text-muted" href="#">About us</a></li>
+                            <li><a class="text-muted" href="#">Privacy</a></li>
+                            <li><a class="text-muted" href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--JavaScript function to post subscriber email to Logic App for population into MailChimp mailing list-->
+    <script>
+        function subscribe() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://prod-00.westeurope.logic.azure.com:443/workflows/1eac5a20d9234642b2bfe7c7bfed426a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=-tdqzqT3__5wbwP5Wr_dTDX7G34NZ-yWMuVttTaR6Oc");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var item = document.getElementById("EmailAddress").value;
+            var itemFormatted = { EmailAddress: item };
+            xhr.send(JSON.stringify(itemFormatted));
+            document.getElementById(formId).reset();
+            alert("Thanks for subscribing. Check your email for your subscription confirmation and exclusive product updates.");
+        }
+    </script>
+</body>
+</html>

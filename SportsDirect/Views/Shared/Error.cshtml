@@ -1,0 +1,23 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<br />
+<br />
+<div class="container" style="padding-top:10%; margin-top:20px; padding-bottom:10%; margin-bottom:20px; text-align:center;">
+    <div class="row justify-content-center">
+        <div class="card" style="width:20rem">
+            <h3 class="text-danger"><img src="~/images/Icons/ambulance.png" height="50" class="mr-2"/>We're sorry, the website seems to have flatlined.</h3>
+            <p class="text-muted">An error occurred while processing your request. The PixelDr team has been notified. In the meantime please perform CPR and try again.</p>
+
+            @if (Model.ShowRequestId)
+            {
+                <p>
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+
+        </div>
+    </div>
+</div>
