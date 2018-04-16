@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SportsDirect.Models;
 
 namespace SportsDirect
 {
@@ -43,6 +44,8 @@ namespace SportsDirect
             CosmosDBGraphClient<Models.Users>.Initialize();
 
             services.AddOptions();
+            //Add location of current webapp serving request as viewable web string
+            services.Configure<OtherSettings>(Configuration.GetSection("OtherSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
