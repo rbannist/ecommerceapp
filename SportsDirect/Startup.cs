@@ -30,10 +30,13 @@ namespace SportsDirect
 
             services.AddMvc();
 
+            //Adding cross-origin resource sharing middleware
+            services.AddCors();
+
             //Add CosmosDB configuration from appsettings.json
             CosmosDBGraphClient.CosmosDBURI = Configuration.GetValue<string>("CosmosDB:URI");
             CosmosDBGraphClient.CosmosDBKey = Configuration.GetValue<string>("CosmosDB:Key");
-            CosmosDBGraphClient.CosmosDBKey = Configuration.GetValue<string>("CosmosDB:DatabaseName");
+            CosmosDBGraphClient.CosmosDBDatabaseName = Configuration.GetValue<string>("CosmosDB:DatabaseName");
             //CosmosDB initialiser
             CosmosDBGraphClient<Models.Orders>.Initialize();
             CosmosDBGraphClient<Models.Products>.Initialize();
