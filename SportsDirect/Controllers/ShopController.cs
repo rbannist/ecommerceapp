@@ -20,11 +20,11 @@ namespace SportsDirect.Controllers
         public async Task<ActionResult> AddToCart(string ItemName, string ItemId)
         {
             //Get the user's current data (containing their shopping cart)
-            Users UserData = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "SportsDirectWebsite", "Users");
+            Users UserData = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
             //Add the new item to the Shopping Cart dictionary
             UserData.ShoppingCart.Add(ItemName, ItemId);
             //Return the updated data to CosmosDB
-            var ShoppingCartUpdate = await CosmosDBGraphClient<Users>.CreateItemAsync(UserData, "SportsDirectWebsite", "Users");
+            var ShoppingCartUpdate = await CosmosDBGraphClient<Users>.CreateItemAsync(UserData, "Users");
 
             return View(ShoppingCartUpdate);
         }
@@ -34,7 +34,7 @@ namespace SportsDirect.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateOrder([FromForm]Orders Order)
         {
-            var OrderPost = await CosmosDBGraphClient<Orders>.CreateItemAsync(Order, "SportsDirectWebsite", "Orders");
+            var OrderPost = await CosmosDBGraphClient<Orders>.CreateItemAsync(Order, "Orders");
 
             return View(OrderPost);
         }

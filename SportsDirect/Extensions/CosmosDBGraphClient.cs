@@ -14,6 +14,8 @@ namespace SportsDirect
     {
         public static string CosmosDBURI { get; set; }
         public static string CosmosDBKey { get; set; }
+
+        public static string CosmosDBDatabaseName { get; set; }
     }
 
     public static class CosmosDBGraphClient<T> where T : class
@@ -26,12 +28,12 @@ namespace SportsDirect
         }
 
         //Display all users & their details where predicate (condition) is met - LEADERBOARD etc.
-        public static async Task<IEnumerable<T>> GetItemsAsync(string databaseId, string collectionId, Expression<Func<T, bool>> predicate)
+        public static async Task<IEnumerable<T>> GetItemsAsync(string collectionId, Expression<Func<T, bool>> predicate)
         {
             var CrossPartitionEnabled = new FeedOptions { EnableCrossPartitionQuery = true }; //Need this for cross-partition searching
 
             IDocumentQuery<T> query = client.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(databaseId, collectionId), CrossPartitionEnabled)// Cross-partition search enabled
+                UriFactory.CreateDocumentCollectionUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId), CrossPartitionEnabled)// Cross-partition search enabled
                 .Where(predicate)
                 .AsDocumentQuery();
 
@@ -53,23 +55,23 @@ namespace SportsDirect
         }
 
         //Code to create an item in the database - takes an item as input and persists it in CosmosDB
-        public static async Task<Document> CreateItemAsync(T item, string databaseId, string collectionId)
+        public static async Task<Document> CreateItemAsync(T item, string collectionId)
         {
-            return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseId, collectionId), item);
+            return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId), item);
         }
 
         //Code to edit an item in the database - fetches item from db then replaces with edited version and posts back
-        public static async Task<Document> UpdateItemAsync(string id, T item, string databaseId, string collectionId)
+        public static async Task<Document> UpdateItemAsync(string id, T item, string collectionId)
         {
-            return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id), item);
+            return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id), item);
         }
 
         //GET INDIVIDUAL ITEM
-        public static async Task<T> GetItemAsync(string id, string databaseId, string collectionId)
+        public static async Task<T> GetItemAsync(string id, string collectionId)
         {
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id));
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id));
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
@@ -87,11 +89,11 @@ namespace SportsDirect
             }
         }
 
-        public static async Task DeleteItemAsync(string id, string databaseId, string collectionId)
+        public static async Task DeleteItemAsync(string id, string collectionId)
         {
             try
             {
-                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(databaseId, collectionId, id));
+                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id));
             }
             catch (DocumentClientException e)
             {

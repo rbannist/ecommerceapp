@@ -30,7 +30,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("SportsDirectWebsite", "Users", d => d.UserId == LoggedInUserId);
+                    var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("Users", d => d.UserId == LoggedInUserId);
                     @await Html.PartialAsync("_ShoppingCart", UserData)
                 }
                 else
