@@ -35,7 +35,7 @@
         JUST LANDED
     </h2>
     @{
-        var LatestProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("SportsDirectWebsite", "Products", d => d.Featured);
+        var LatestProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("Products", d => d.Featured);
     }
     @await Html.PartialAsync("_FeaturedProductsStrip", LatestProducts)<!--Populates the featured products strip-->
 
