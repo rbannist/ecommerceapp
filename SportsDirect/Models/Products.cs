@@ -17,6 +17,9 @@ namespace SportsDirect.Models
         [JsonProperty(PropertyName = "ProductCategory")]
         public string ProductCategory { get; set; }
 
+        [JsonProperty(PropertyName = "ProductTags")]
+        public List<string> ProductTags { get; set; }
+
         [JsonProperty(PropertyName = "ProductCost")]
         public int ProductCost { get; set; }
 

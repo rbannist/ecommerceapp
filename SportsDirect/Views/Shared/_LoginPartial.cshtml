@@ -7,8 +7,8 @@
 @if (User.Identity.IsAuthenticated)
 {
     <li class="nav-item dropdown nav-link-username-edit">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="far fa-user"></i>
+        <a class="nav-link dropdown-toggle text-muted" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="far fa-user pt-0 mr-2"></i>
             @User.Identity.Name
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -22,7 +22,7 @@
 }
 else
 {
-        <li class="nav-link">
-            <a asp-area="" asp-controller="Account" asp-action="SignIn" class="btn btn-light nav-link-edit">SIGN IN | CREATE ACCOUNT</a>
-        </li>
+    <li class="nav-link">
+        <a asp-area="" asp-controller="Account" asp-action="SignIn" class="btn btn-light nav-link-edit text-muted"><i class="fas fa-user pt-0 mr-2"></i><small>Sign In</small></a>
+    </li>
 }

@@ -16,69 +16,69 @@
 <body>
     <!--Navbar-------------------------------------------------------------------------------------------------------->
     <header>
-        <!--Insert top account grey bar here-->
-        <nav class="navbar navbar-expand-lg bg-white">
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search product or brand" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
-            <div class="text-center">
-                <img src="images/sportsdirect2016.png" />
-            </div>
-            <ul class="navbar-nav float-md-right">
-                <!--Shopping cart data fetch from Cosmos-->
-                @if (User.Identity.IsAuthenticated)
-                {
-                    var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                    var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("Users", d => d.UserId == LoggedInUserId);
-                    @await Html.PartialAsync("_ShoppingCart", UserData)
-                }
-                else
-                {
-                    <li><i class="fas fa-shopping-cart"></i>BAG IS EMPTY</li>
-                }
-            </ul>
+        <nav class="navbar navbar-expand-lg bg-light pt-0 pb-0 justify-content-end" style="height:35px">
+                @await Html.PartialAsync("_LoginPartial")
         </nav>
-        <nav class="navbar navbar-expand-lg bg-primary pb-0 pt-0">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="row justify-content-md-center">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">MENS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">LADIES</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">KIDS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">FOOTBALL</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">RUNNING</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">OUTDOOR</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">ACCESSORIES</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">SPORTS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white">BRANDS</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link text-white bg-danger">OUTLET</a>
-                        </li>
-                    </ul>
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="col-sm">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search product or brand" aria-label="Search">
+                </form>
+            </div>
+            <div class="col-sm--6 text-center">
+                <div class="text-center">
+                    <img src="images/sportsdirect2016.png" />
                 </div>
             </div>
+            <div class="col-sm">
+                <ul class="navbar-nav float-md-right text-muted">
+                    <!--Shopping cart data fetch from Cosmos-->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                        var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("Users", d => d.UserId == LoggedInUserId);
+                        @await Html.PartialAsync("_ShoppingCart", UserData)
+                    }
+                    else
+                    {
+                        <li class="text-muted"><i class="fas fa-shopping-cart mr-3"></i>BAG IS EMPTY</li>
+                    }
+                </ul>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg bg-primary pb-0 pt-0 justify-content-center">
+                            <ul class="nav justify-content-center">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">MENS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">LADIES</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">KIDS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">FOOTBALL</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">RUNNING</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">OUTDOOR</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">ACCESSORIES</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">SPORTS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white">BRANDS</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link text-white bg-danger">OUTLET</a>
+                                </li>
+                            </ul>
         </nav>
     </header>
     <!--Body content is rendered below--------------------------------------------------------------------------------------->
@@ -87,16 +87,18 @@
     <!--Footer content------------------------------------------------------------------------------------------------------->
     <footer>
         <!--Subscribe------------------------------------------------------------------------------------------------------------>
-        <div class="container-fluid bg-light">
+        <div class="container-fluid bg-light pt-5 pb-5">
             <div class="container text-center">
-                <h2>
-                    Subscribe to Sports Direct
-                </h2>
-                <p>Sign up now to get exclusive product updates and information</p>
-                <form class="form-inline" name="Subscribe" id="Subscribe" method="post" action="javascript:subscribe();">
-                    <input class="form-control mr-sm-2" type="email" placeholder="Enter your email address" aria-label="Email">
-                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Subscribe</button>
-                </form>
+                <h4 class="mb-2">
+                    SUBSCRIBE TO SPORTS DIRECT
+                </h4>
+                <p class="mb-2">Sign up now to get exclusive product updates and information.</p>
+                <div class="row justify-content-center">
+                    <form class="form-inline" name="Subscribe" id="Subscribe" method="post" action="javascript:subscribe();">
+                        <input class="form-control mr-sm-2" type="email" placeholder="Enter your email address" aria-label="Email">
+                        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Subscribe</button>
+                    </form>
+                </div>
             </div>
         </div>
         <!--Company info-->
