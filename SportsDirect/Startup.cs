@@ -30,6 +30,7 @@ namespace SportsDirect
 
             services.AddMvc();
 
+
             //Adding cross-origin resource sharing middleware
             services.AddCors();
 
@@ -42,8 +43,6 @@ namespace SportsDirect
             CosmosDBGraphClient<Models.Users>.Initialize();
 
             services.AddOptions();
-            //And add Azure AD B2C Graph config
-            services.Configure<AzureADB2CGraphOptions>(Configuration.GetSection("AzureADB2CGraph"));
             //services.Configure<CosmosDBOptions>(Configuration.GetSection("CosmosDB"));
         }
 
@@ -64,6 +63,8 @@ namespace SportsDirect
                 builder.WithOrigins("https://login.microsoftonline.com"));
 
             app.UseAuthentication();
+
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {

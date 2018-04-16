@@ -10,7 +10,7 @@
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--Font-Awesome icons-->
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
@@ -20,9 +20,9 @@
         <nav class="navbar navbar-expand-lg bg-white">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search product or brand" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
             </form>
-            <div class="align-items-center">
+            <div class="text-center">
                 <img src="images/sportsdirect2016.png" />
             </div>
             <ul class="navbar-nav float-md-right">
@@ -35,47 +35,49 @@
                 }
                 else
                 {
-                    <li><i class="far fa-shopping-cart"></i>BAG IS EMPTY</li>
+                    <li><i class="fas fa-shopping-cart"></i>BAG IS EMPTY</li>
                 }
             </ul>
         </nav>
-        <nav class="navbar navbar-expand-lg bg-primary">
+        <nav class="navbar navbar-expand-lg bg-primary pb-0 pt-0">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <ul class="navbar-nav mr-auto text-white text-center">
-                    <li class="nav-item">
-                        <a href="" class="nav-link">MENS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">LADIES</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">KIDS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">FOOTBALL</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">RUNNING</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">OUTDOOR</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">ACCESSORIES</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">SPORTS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">BRANDS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">OUTLET</a>
-                    </li>
-                </ul>
+                <div class="row justify-content-md-center">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">MENS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">LADIES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">KIDS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">FOOTBALL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">RUNNING</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">OUTDOOR</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">ACCESSORIES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">SPORTS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white">BRANDS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link text-white bg-danger">OUTLET</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
     </header>
@@ -102,7 +104,7 @@
             <div class="pt-4 my-md-5 pt-md-5 border-top">
                 <div class="row">
                     <div class="col-12 col-md">
-                        <img class="mb-2" src="~/images/sportsdirect2016.png" alt="" width="60" height="24">
+                        <img class="mb-2" src="~/images/sportsdirect2016.png" alt="SportsDirect" width="200">
                         <small class="d-block mb-3 text-muted">&copy; 2018</small>
                     </div>
                     <div class="col-6 col-md">

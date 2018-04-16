@@ -10,12 +10,11 @@ namespace SportsDirect.Controllers
     public class AccountController : Controller
     {
         //Below calls configuration appsettings for AADB2C Graph Client
-        private readonly AzureAdB2COptions _options;
-        private static AzureADB2CGraphClient graphClient = null;
+        private readonly AzureAdB2COptions _b2cOptions;
 
         public AccountController(IOptions<AzureAdB2COptions> b2cOptions)
         {
-            _options = b2cOptions.Value;
+            _b2cOptions = b2cOptions.Value;
         }
         //--------------------------------------------------------------
 
@@ -33,7 +32,7 @@ namespace SportsDirect.Controllers
         {
             var redirectUrl = Url.Action(nameof(HomeController.Index), "Home");
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = _options.ResetPasswordPolicyId;
+            properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = _b2cOptions.ResetPasswordPolicyId;
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
@@ -42,7 +41,7 @@ namespace SportsDirect.Controllers
         {
             var redirectUrl = Url.Action(nameof(HomeController.Index), "Home");
             var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
-            properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = _options.EditProfilePolicyId;
+            properties.Items[AzureAdB2COptions.PolicyAuthenticationProperty] = _b2cOptions.EditProfilePolicyId;
             return Challenge(properties, OpenIdConnectDefaults.AuthenticationScheme);
         }
 

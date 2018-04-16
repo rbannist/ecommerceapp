@@ -24,7 +24,7 @@ namespace SportsDirect
         {
             client = new DocumentClient(new Uri(CosmosDBGraphClient.CosmosDBURI), CosmosDBGraphClient.CosmosDBKey);
         }
-        
+
         //Display all users & their details where predicate (condition) is met - LEADERBOARD etc.
         public static async Task<IEnumerable<T>> GetItemsAsync(string databaseId, string collectionId, Expression<Func<T, bool>> predicate)
         {
@@ -107,3 +107,4 @@ namespace SportsDirect
         }
     }
 }
+

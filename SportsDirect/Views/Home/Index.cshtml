@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home";
 }
 <!--Image carousel-------------------------------------------------------------------------------------------------------->
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide mt-3 ml-4 mr-4 mb-3" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img class="d-block w-100" src="~/images/Banners/banner1.jpg" alt="First slide">
@@ -26,27 +26,43 @@
 </div>
 
 <!--Categories------------------------------------------------------------------------------------------------------------>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm">
-            <img src="~/images/Tiles/sd-home-fw-april-mens.jpg" />
-        </div>
-        <div class="col-sm">
-            <img src="~/images/Tiles/sd-home-fw-april-lds.jpg" />
-        </div>
-        <div class="col-sm">
-            <img src="~/images/Tiles/sd-home-fw-april-kids.jpg" />
+<div class="card-deck ml-3 mr-3">
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/sd-home-fw-april-mens.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">MENS TRAINERS</small>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm">
-            <img src="~/images/Tiles/sd-home-cl-april-mens.jpg" />
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/sd-home-fw-april-lds.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">LADIES TRAINERS</small>
         </div>
-        <div class="col-sm">
-            <img src="~/images/Tiles/sd-home-cl-april-lds.jpg" />
+    </div>
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/sd-home-fw-april-kids.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">KIDS TRAINERS</small>
         </div>
-        <div class="col-sm">
-            <img src="~/images/Tiles/kids-clothing-457x457.jpg" />
+    </div>
+</div>
+<div class="card-deck mt-3 ml-3 mr-3 mb-3">
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/sd-home-cl-april-mens.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">MENS CLOTHING</small>
+        </div>
+    </div>
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/sd-home-cl-april-lds.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">LADIES CLOTHING</small>
+        </div>
+    </div>
+    <div class="card">
+        <img class="card-img" src="~/images/Tiles/kids-clothing-457x457.jpg" />
+        <div class="card-footer bg-dark text-center">
+            <small class="text-white">KIDS CLOTHING</small>
         </div>
     </div>
 </div>
@@ -57,7 +73,7 @@
         JUST LANDED
     </h2>
     @{
-        var LatestProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("SportsDirectWebsite", "Products", d => d.Featured);
+        var LatestProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("SportsDirect", "Products", d => d.Featured);
     }
     @await Html.PartialAsync("_FeaturedProductsStrip", LatestProducts)<!--Populates the featured products strip-->
 
