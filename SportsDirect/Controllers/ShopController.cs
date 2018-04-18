@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SportsDirect.Models;
+using System.Text;
+using System.Threading;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Extensions.Options;
 
 namespace SportsDirect.Controllers
 {
@@ -43,8 +47,10 @@ namespace SportsDirect.Controllers
         {
             //Get the user's current data (containing their shopping cart)
             Users UserData = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
+
             //Add the new item to the Shopping Cart dictionary
             UserData.ShoppingCart.Add(ItemName, ItemId);
+
             //Return the updated data to CosmosDB
             var ShoppingCartUpdate = await CosmosDBGraphClient<Users>.UpdateItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, UserData, "Users");
 
@@ -63,9 +69,17 @@ namespace SportsDirect.Controllers
             //Create a new order in Cosmos DB
             var OrderPost = await CosmosDBGraphClient<Orders>.CreateItemAsync(order, "Orders");
 
+            //Place the Order on a Service Bus queue for fulfillment processing
+            await ServiceBusClient.SendMessageAsync(order.ToString());
+
             //Add the newly generated order ID to the user's order history
             var UserProfile = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
             UserProfile.OrderHistory.Add(OrderPost.Id);
+
+            //Clear their shopping cart
+            UserProfile.ShoppingCart.Clear();
+
+            //Update Cosmos DB with the changes
             var UpdatedUserProfile = await CosmosDBGraphClient<Users>.UpdateItemAsync(UserProfile.UserId, UserProfile, "Users");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");

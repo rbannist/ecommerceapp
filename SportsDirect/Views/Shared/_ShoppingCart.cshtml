@@ -18,7 +18,7 @@
         <a href="@Url.Action("Product", "Shop", new { selectedProductId = item.Value }, null)" class="dropdown-item">@item.Key</a>
     }
         <div class="dropdown-divider"></div>
-        <a href="@Url.Action("CreateOrder", "Shop", new { OrderedProducts = Model.ShoppingCart.Keys }, null)" class="btn btn-primary text-white">Check out</a>
+        <a href="@Url.Action("CreateOrder", "Shop", new { OrderedProducts = Model.ShoppingCart.Values }, null)" class="btn btn-primary text-white">Check out</a>
     </div>
 </li>
 

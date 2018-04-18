@@ -39,12 +39,19 @@ namespace SportsDirect
             CosmosDBGraphClient.CosmosDBKey = Configuration.GetValue<string>("CosmosDB:Key");
             CosmosDBGraphClient.CosmosDBDatabaseName = Configuration.GetValue<string>("CosmosDB:DatabaseName");
             //CosmosDB initialiser
-            CosmosDBGraphClient<Models.Orders>.Initialize();
-            CosmosDBGraphClient<Models.Products>.Initialize();
-            CosmosDBGraphClient<Models.Users>.Initialize();
+            CosmosDBGraphClient<Orders>.Initialize();
+            CosmosDBGraphClient<Products>.Initialize();
+            CosmosDBGraphClient<Users>.Initialize();
+
+            //Add Service Bus config
+            ServiceBusClientCredentials.ConnectionString = Configuration.GetValue<string>("ServiceBus:ConnectionString");
+            ServiceBusClientCredentials.Key = Configuration.GetValue<string>("ServiceBus:Key");
+            ServiceBusClientCredentials.QueueName = Configuration.GetValue<string>("ServiceBus:QueueName");
+            //Service Bus initialiser
+            ServiceBusClient.Initialize();
 
             services.AddOptions();
-            //Add location of current webapp serving request as viewable web string
+            //Add other config
             services.Configure<OtherSettings>(Configuration.GetSection("OtherSettings"));
         }
 
