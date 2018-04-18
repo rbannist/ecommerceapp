@@ -21,6 +21,7 @@ namespace SportsDirect.Controllers
         public IActionResult Index()
         {
             ViewData["Location"] = _otherSettings.Location;
+
             return View();
         }
 

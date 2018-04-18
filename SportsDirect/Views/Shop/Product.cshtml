@@ -1,0 +1,54 @@
+﻿@model Products
+@{
+    ViewData["Title"] = "- Shop";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="my-4">@Model.ProductCategory</h1>
+            <div class="list-group">
+                <a href="@Url.Action("Index", "Shop", new { category = "Mens Trainers" }, null)" class="list-group-item">Mens Trainers</a>
+                <a href="@Url.Action("Index", "Shop", new { category = "Ladies Trainers" }, null)" class="list-group-item">Ladies Trainers</a>
+                <a href="@Url.Action("Index", "Shop", new { category = "Kids Trainers" }, null)" class="list-group-item">Kids Trainers</a>
+                <a href="@Url.Action("Index", "Shop", new { category = "Mens Clothing" }, null)" class="list-group-item">Mens Clothing</a>
+                <a href="@Url.Action("Index", "Shop", new { category = "Ladies Clothing" }, null)" class="list-group-item">Ladies Clothing</a>
+                <a href="@Url.Action("Index", "Shop", new { category = "Kids Clothing" }, null)" class="list-group-item">Kids Clothing</a>
+            </div>
+        </div>
+
+        <div class="col-lg-9">
+            <div class="card mt-4">
+                @{string imageURL = "https://sdneapp01prodsa01.blob.core.windows.net/productimages/" + Model.ProductId + "-lg.jpg"; }
+                <img class="card-img-top img-fluid" src="@imageURL" alt="@Model.ProductName">
+                <div class="card-body">
+                    <h3 class="card-title">@Model.ProductName</h3>
+                    <h4>£@Model.ProductCost</h4>
+                    <p class="card-text">@Model.ProductDetails</p>
+                    <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+                    4.0 stars
+                </div>
+                <a class="btn btn-lg btn-primary" href="@Url.Action("AddToCart", "Shop", new { ItemName = Model.ProductName, ItemId = Model.ProductId, ItemCategory = Model.ProductCategory }, null)">Add to cart</a>
+            </div>
+
+            <div class="card card-outline-secondary my-4">
+                <div class="card-header">
+                    Product Reviews
+                </div>
+                <div class="card-body">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <hr>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
+                    <small class="text-muted">Posted by Anonymous on 3/1/17</small>
+                    <hr>
+                    <a href="#" class="btn btn-success">Leave a Review</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

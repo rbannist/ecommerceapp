@@ -1,12 +1,24 @@
 @model SportsDirect.Models.Users
-<li class="nav-link nav-link-edit">
+<li class="nav-link nav-link-edit dropdown">
+    
     <i class="fas fa-shopping-cart"></i>
     @if (Model.ShoppingCart.Count < 1)
     {
-        <p>BAG IS EMPTY</p>
+        @:BAG IS EMPTY
     }
     else
     {
-        <p>@Model.ShoppingCart.Count item(s)</p>
+        <a class="dropdown-toggle text-muted" href="#" id="shoppingCartDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Model.ShoppingCart.Count item(s)
+        </a>
     }
+    <div class="dropdown-menu dropdown-menu-right text-center" aria-labelledby="shoppingCartDropdown">
+    @foreach (var item in Model.ShoppingCart)
+    {
+        <a href="@Url.Action("Product", "Shop", new { selectedProductId = item.Value }, null)" class="dropdown-item">@item.Key</a>
+    }
+        <div class="dropdown-divider"></div>
+        <a href="@Url.Action("CreateOrder", "Shop", new { OrderedProducts = Model.ShoppingCart.Keys }, null)" class="btn btn-primary text-white">Check out</a>
+    </div>
 </li>
+

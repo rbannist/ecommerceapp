@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SportsDirect.Models;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SportsDirect.Controllers
 {
@@ -19,12 +23,47 @@ namespace SportsDirect.Controllers
         //--------------------------------------------------------------
 
         [HttpGet]
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [HttpGet]
         public IActionResult SignIn()//Or sign up
         {
-            var redirectUrl = Url.Action(nameof(HomeController.Index));
+            var redirectUrl = Url.Action(nameof(AccountController.NewUser));//Checks if they are new user
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
                 OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> NewUser()
+        {
+            //Added authentication check below
+            bool newUser = false;
+            bool.TryParse(User.FindFirst("newUser")?.Value, out newUser);//Try and find the newUser boolean claim and put into variable
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (newUser)
+                {
+                    //Create user profile in Cosmos DB
+                    Users user = new Users();
+                    user.UserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    user.FirstName = User.Identity.Name;
+                    user.LastName = User.FindFirst(ClaimTypes.Surname).Value;
+                    user.ShoppingCart = new Dictionary<string, string>();
+                    user.OrderHistory = new List<string>();
+
+                    var newUserProfile = await CosmosDBGraphClient<Users>.CreateItemAsync(user, "Users");
+
+                    return RedirectToAction(nameof(HomeController.Index));
+                }
+
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            return RedirectToAction(nameof(HomeController.Index));
         }
 
         [HttpGet]

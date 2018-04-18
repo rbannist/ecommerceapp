@@ -1,6 +1,6 @@
 ﻿@using SportsDirect.Models;
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = ViewData["Location"];
 }
 <!--Image carousel-------------------------------------------------------------------------------------------------------->
 <div class="container">
@@ -31,42 +31,54 @@
 <div class="container">
     <div class="card-deck ml-3 mr-3">
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/sd-home-fw-april-mens.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">MENS TRAINERS</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Mens Trainers" }, null)">
+                <img class="card-img" src="~/images/Tiles/sd-home-fw-april-mens.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">MENS TRAINERS</small>
+                </div>
+            </a>
         </div>
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/sd-home-fw-april-lds.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">LADIES TRAINERS</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Ladies Trainers" }, null)">
+                <img class="card-img" src="~/images/Tiles/sd-home-fw-april-lds.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">LADIES TRAINERS</small>
+                </div>
+            </a>
         </div>
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/sd-home-fw-april-kids.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">KIDS TRAINERS</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Kids Trainers" }, null)">
+                <img class="card-img" src="~/images/Tiles/sd-home-fw-april-kids.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">KIDS TRAINERS</small>
+                </div>
+            </a>
         </div>
     </div>
     <div class="card-deck mt-3 ml-3 mr-3 mb-3">
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/sd-home-cl-april-mens.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">MENS CLOTHING</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Mens Clothing" }, null)">
+                <img class="card-img" src="~/images/Tiles/sd-home-cl-april-mens.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">MENS CLOTHING</small>
+                </div>
+            </a>
         </div>
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/sd-home-cl-april-lds.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">LADIES CLOTHING</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Ladies Clothing" }, null)">
+                <img class="card-img" src="~/images/Tiles/sd-home-cl-april-lds.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">LADIES CLOTHING</small>
+                </div>
+            </a>
         </div>
         <div class="card">
-            <img class="card-img" src="~/images/Tiles/kids-clothing-457x457.jpg" />
-            <div class="card-footer bg-dark text-center">
-                <small class="text-white">KIDS CLOTHING</small>
-            </div>
+            <a style="text-decoration:none; color:#ffffff" href="@Url.Action("Category", "Shop", new { category = "Kids Clothing" }, null)">
+                <img class="card-img" src="~/images/Tiles/kids-clothing-457x457.jpg" />
+                <div class="card-footer bg-dark text-center">
+                    <small class="text-white">KIDS CLOTHING</small>
+                </div>
+            </a>
         </div>
     </div>
 </div>

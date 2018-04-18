@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>SportsDirect.com - @ViewData["Title"]</title>
+    <title>Sports Direct @ViewData["Location"]</title>
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--Font-Awesome icons-->
@@ -27,7 +27,7 @@
             </div>
             <div class="col-sm--6 text-center">
                 <div class="text-center">
-                    <img src="images/sportsdirect2016.png" />
+                    <img src="~/images/sportsdirect2016.png" />
                 </div>
             </div>
             <div class="col-sm">
@@ -36,8 +36,11 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                        var UserData = await CosmosDBGraphClient<Users>.GetItemsAsync("Users", d => d.UserId == LoggedInUserId);
-                        @await Html.PartialAsync("_ShoppingCart", UserData)
+                        var UserData = await CosmosDBGraphClient<Users>.GetItemAsync(LoggedInUserId, "Users");
+                        if (UserData != null)
+                        {
+                            @await Html.PartialAsync("_ShoppingCart", UserData)
+                        }
                     }
                     else
                     {
@@ -49,31 +52,31 @@
         <nav class="navbar navbar-expand-lg bg-primary pb-0 pt-0 justify-content-center">
                             <ul class="nav justify-content-center">
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">MENS</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Mens" }, null)" class="nav-link text-white">MENS</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">LADIES</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Ladies" }, null)" class="nav-link text-white">LADIES</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">KIDS</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Kids" }, null)" class="nav-link text-white">KIDS</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">FOOTBALL</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Football" }, null)" class="nav-link text-white">FOOTBALL</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">RUNNING</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Running" }, null)" class="nav-link text-white">RUNNING</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">OUTDOOR</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Outdoor" }, null)" class="nav-link text-white">OUTDOOR</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">ACCESSORIES</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Accessories" }, null)" class="nav-link text-white">ACCESSORIES</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">SPORTS</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Sports" }, null)" class="nav-link text-white">SPORTS</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link text-white">BRANDS</a>
+                                    <a href="@Url.Action("Tag", "Shop", new { tag = "Brands" }, null)" class="nav-link text-white">BRANDS</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="" class="nav-link text-white bg-danger">OUTLET</a>
@@ -92,7 +95,7 @@
                 <h4 class="mb-2">
                     SUBSCRIBE TO SPORTS DIRECT
                 </h4>
-                <p class="mb-2">Sign up now to get exclusive product updates and information.</p>
+                <p class="mb-4">Sign up now to get exclusive product updates and information.</p>
                 <div class="row justify-content-center">
                     <form class="form-inline" name="Subscribe" id="Subscribe" method="post" action="javascript:subscribe();">
                         <input class="form-control mr-sm-2" type="email" placeholder="Enter your email address" aria-label="Email">

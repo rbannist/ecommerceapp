@@ -1,4 +1,4 @@
-@model  IEnumerable<SportsDirect.Models.Products>
+@model  IEnumerable<Products>
 
 <div class="container">
     <div class="row flex-row flex-nowrap" style="overflow-x:auto; overflow-y:hidden; border-left: 1px solid #d1d1d1; border-right: 1px solid #d1d1d1;">
@@ -6,7 +6,7 @@
         @foreach (var product in Model)
         {
             string imageURL = "https://sdneapp01prodsa01.blob.core.windows.net/productimages/" + product.ProductId + ".jpg";
-                <a style="text-decoration:none; color:#4a4a4a" href="">
+                <a style="text-decoration:none; color:#4a4a4a" href="@Url.Action("Product", "Shop", new { selectedProductId = product.ProductId }, null)">
                     <div class="card text-center mb-2 mr-2" style="width: 18rem; height: 340px">
                         <img class="card-img-top" src="@imageURL" alt="Card image cap">
                         <div class="card-body">

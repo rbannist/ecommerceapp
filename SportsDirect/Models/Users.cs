@@ -19,6 +19,6 @@ namespace SportsDirect.Models
         public Dictionary<string, string> ShoppingCart { get; set; }
 
         [JsonProperty(PropertyName = "OrderHistory")]
-        public Dictionary<string, string> OrderHistory { get; set; }
+        public List<string> OrderHistory { get; set; }
     }
 }
