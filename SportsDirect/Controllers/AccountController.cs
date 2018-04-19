@@ -13,7 +13,7 @@ namespace SportsDirect.Controllers
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        //Below calls configuration appsettings for AADB2C Graph Client
+        //Below calls configuration appsettings for AADB2C
         private readonly AzureAdB2COptions _b2cOptions;
 
         public AccountController(IOptions<AzureAdB2COptions> b2cOptions)
@@ -56,7 +56,7 @@ namespace SportsDirect.Controllers
                     user.ShoppingCart = new Dictionary<string, string>();
                     user.OrderHistory = new List<string>();
 
-                    var newUserProfile = await CosmosDBGraphClient<Users>.CreateItemAsync(user, "Users");
+                    var newUserProfile = await CosmosDBClient<Users>.CreateItemAsync(user, "Users");
 
                     return RedirectToAction(nameof(HomeController.Index));
                 }

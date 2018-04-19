@@ -36,7 +36,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         var LoggedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                        var UserData = await CosmosDBGraphClient<Users>.GetItemAsync(LoggedInUserId, "Users");
+                        var UserData = await CosmosDBClient<Users>.GetItemAsync(LoggedInUserId, "Users");
                         if (UserData != null)
                         {
                             @await Html.PartialAsync("_ShoppingCart", UserData)

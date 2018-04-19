@@ -35,13 +35,13 @@ namespace SportsDirect
             services.AddCors();
 
             //Add CosmosDB configuration from appsettings.json
-            CosmosDBGraphClient.CosmosDBURI = Configuration.GetValue<string>("CosmosDB:URI");
-            CosmosDBGraphClient.CosmosDBKey = Configuration.GetValue<string>("CosmosDB:Key");
-            CosmosDBGraphClient.CosmosDBDatabaseName = Configuration.GetValue<string>("CosmosDB:DatabaseName");
+            CosmosDBClient.CosmosDBURI = Configuration.GetValue<string>("CosmosDB:URI");
+            CosmosDBClient.CosmosDBKey = Configuration.GetValue<string>("CosmosDB:Key");
+            CosmosDBClient.CosmosDBDatabaseName = Configuration.GetValue<string>("CosmosDB:DatabaseName");
             //CosmosDB initialiser
-            CosmosDBGraphClient<Orders>.Initialize();
-            CosmosDBGraphClient<Products>.Initialize();
-            CosmosDBGraphClient<Users>.Initialize();
+            CosmosDBClient<Orders>.Initialize();
+            CosmosDBClient<Products>.Initialize();
+            CosmosDBClient<Users>.Initialize();
 
             //Add Service Bus config
             ServiceBusClientCredentials.ConnectionString = Configuration.GetValue<string>("ServiceBus:ConnectionString");

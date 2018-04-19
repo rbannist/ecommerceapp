@@ -19,7 +19,7 @@ namespace SportsDirect.Controllers
             ViewData["Category"] = category;
 
             //Fetch items from the specific category
-            var CategoryProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("Products", p => p.ProductCategory == category);
+            var CategoryProducts = await CosmosDBClient<Products>.GetItemsAsync("Products", p => p.ProductCategory == category);
 
             return View(CategoryProducts);
         }
@@ -29,7 +29,7 @@ namespace SportsDirect.Controllers
             ViewData["Tag"] = tag;
 
             //Fetch items containing a specific tag
-            var TagProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("Products", p => p.ProductTags.Contains(tag));
+            var TagProducts = await CosmosDBClient<Products>.GetItemsAsync("Products", p => p.ProductTags.Contains(tag));
 
             return View(TagProducts);
         }
@@ -37,7 +37,7 @@ namespace SportsDirect.Controllers
         public async Task<ActionResult> Product(string selectedProductId)
         {
             //Fetch product data from Cosmos DB
-            var ProductDetails = await CosmosDBGraphClient<Products>.GetItemAsync(selectedProductId, "Products");
+            var ProductDetails = await CosmosDBClient<Products>.GetItemAsync(selectedProductId, "Products");
 
             return View(ProductDetails);
         }
@@ -46,13 +46,13 @@ namespace SportsDirect.Controllers
         public async Task<ActionResult> AddToCart(string ItemName, string ItemId, string ItemCategory)
         {
             //Get the user's current data (containing their shopping cart)
-            Users UserData = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
+            Users UserData = await CosmosDBClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
 
             //Add the new item to the Shopping Cart dictionary
             UserData.ShoppingCart.Add(ItemName, ItemId);
 
             //Return the updated data to CosmosDB
-            var ShoppingCartUpdate = await CosmosDBGraphClient<Users>.UpdateItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, UserData, "Users");
+            var ShoppingCartUpdate = await CosmosDBClient<Users>.UpdateItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, UserData, "Users");
 
             return RedirectToAction(nameof(ShopController.Category), "Shop", new { category = ItemCategory });
         }
@@ -67,20 +67,20 @@ namespace SportsDirect.Controllers
             order.OrderStatus = "Created";
 
             //Create a new order in Cosmos DB
-            var OrderPost = await CosmosDBGraphClient<Orders>.CreateItemAsync(order, "Orders");
+            var OrderPost = await CosmosDBClient<Orders>.CreateItemAsync(order, "Orders");
 
             //Place the Order on a Service Bus queue for fulfillment processing
             await ServiceBusClient.SendMessageAsync(order.ToString());
 
             //Add the newly generated order ID to the user's order history
-            var UserProfile = await CosmosDBGraphClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
+            var UserProfile = await CosmosDBClient<Users>.GetItemAsync(User.FindFirst(ClaimTypes.NameIdentifier).Value, "Users");
             UserProfile.OrderHistory.Add(OrderPost.Id);
 
             //Clear their shopping cart
             UserProfile.ShoppingCart.Clear();
 
             //Update Cosmos DB with the changes
-            var UpdatedUserProfile = await CosmosDBGraphClient<Users>.UpdateItemAsync(UserProfile.UserId, UserProfile, "Users");
+            var UpdatedUserProfile = await CosmosDBClient<Users>.UpdateItemAsync(UserProfile.UserId, UserProfile, "Users");
 
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

@@ -89,7 +89,7 @@
         JUST LANDED
     </h4>
     @{
-        var LatestProducts = await CosmosDBGraphClient<Products>.GetItemsAsync("Products", d => d.Featured);
+        var LatestProducts = await CosmosDBClient<Products>.GetItemsAsync("Products", d => d.Featured);
     }
     @await Html.PartialAsync("_FeaturedProductsStrip", LatestProducts)<!--Populates the featured products strip-->
 

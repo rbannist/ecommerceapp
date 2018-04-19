@@ -7,10 +7,11 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.IO;
 
 namespace SportsDirect
 {
-    public class CosmosDBGraphClient
+    public class CosmosDBClient
     {
         public static string CosmosDBURI { get; set; }
         public static string CosmosDBKey { get; set; }
@@ -18,22 +19,22 @@ namespace SportsDirect
         public static string CosmosDBDatabaseName { get; set; }
     }
 
-    public static class CosmosDBGraphClient<T> where T : class
+    public static class CosmosDBClient<T> where T : class
     {
         private static DocumentClient client;
 
         public static void Initialize()
         {
-            client = new DocumentClient(new Uri(CosmosDBGraphClient.CosmosDBURI), CosmosDBGraphClient.CosmosDBKey);
+            client = new DocumentClient(new Uri(CosmosDBClient.CosmosDBURI), CosmosDBClient.CosmosDBKey);
         }
 
-        //Display all users & their details where predicate (condition) is met - LEADERBOARD etc.
+        //Display all users & their details where predicate (condition) is met
         public static async Task<IEnumerable<T>> GetItemsAsync(string collectionId, Expression<Func<T, bool>> predicate)
         {
             var CrossPartitionEnabled = new FeedOptions { EnableCrossPartitionQuery = true }; //Need this for cross-partition searching
 
             IDocumentQuery<T> query = client.CreateDocumentQuery<T>(
-                UriFactory.CreateDocumentCollectionUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId), CrossPartitionEnabled)// Cross-partition search enabled
+                UriFactory.CreateDocumentCollectionUri(CosmosDBClient.CosmosDBDatabaseName, collectionId), CrossPartitionEnabled)// Cross-partition search enabled
                 .Where(predicate)
                 .AsDocumentQuery();
 
@@ -45,25 +46,50 @@ namespace SportsDirect
                     results.AddRange(await query.ExecuteNextAsync<T>());
                 }
             }
-            catch
+            catch (DocumentClientException e)
             {
-                System.Diagnostics.Debug.WriteLine("ERROR FETCHING CROSS-USER DATA FROM COSMOSDB, with CollectionId: {0} and predicate: {1}. RETURNING NULL ITEMS.", collectionId, predicate);
-                results = null;
+                if (e.StatusCode == HttpStatusCode.NotFound)
+                {
+                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now} :: Exception: {e.Message} :: ERROR FETCHING DATA FROM COSMOSDB, with CollectionId: {collectionId} and predicate: {predicate}. RETURNING NULL ITEMS.");
+                    
+                    results = null;
+                }
+                else
+                {
+                    string msg = $"{DateTime.Now} :: Exception: {e.Message}";
+                    throw new Exception(msg);
+                }
             }
-
             return results;
         }
 
         //Code to create an item in the database - takes an item as input and persists it in CosmosDB
         public static async Task<Document> CreateItemAsync(T item, string collectionId)
         {
-            return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId), item);
+            try
+            {
+                return await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(CosmosDBClient.CosmosDBDatabaseName, collectionId), item);
+            }
+            catch (DocumentClientException e)
+            {
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now} :: Exception: {e.Message} :: ERROR CREATING DATA IN COSMOSDB, with CollectionId: {collectionId}.");
+                return null;
+            }
         }
 
         //Code to edit an item in the database - fetches item from db then replaces with edited version and posts back
         public static async Task<Document> UpdateItemAsync(string id, T item, string collectionId)
         {
-            return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id), item);
+            try
+            {
+                return await client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBClient.CosmosDBDatabaseName, collectionId, id), item);
+            }
+            catch (DocumentClientException e)
+            {
+                System.Diagnostics.Debug.WriteLine($"{DateTime.Now} :: Exception: {e.Message} :: ERROR UPDATING DATA IN COSMOSDB, with CollectionId: {collectionId}.");
+                return null;
+            }
+            
         }
 
         //GET INDIVIDUAL ITEM
@@ -71,19 +97,19 @@ namespace SportsDirect
         {
             try
             {
-                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id));
+                Document document = await client.ReadDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBClient.CosmosDBDatabaseName, collectionId, id));
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
             {
                 if (e.StatusCode == HttpStatusCode.NotFound)
                 {
-                    System.Diagnostics.Debug.WriteLine("ERROR FETCHING SINGLE-USER ITEM FROM COSMOSDB - ITEM DOES NOT EXIST - item id: {0} CollectionId: {1} and username/partition key: {2}. RETURNING NULL ITEMS.", id, collectionId);
+                    System.Diagnostics.Debug.WriteLine("ERROR FETCHING ITEM FROM COSMOSDB - ITEM DOES NOT EXIST - item id: {0} CollectionId: {1}. RETURNING NULL ITEM.", id, collectionId);
                     return null;
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("ERROR FETCHING SINGLE-USER ITEM FROM COSMOSDB, with item id: {0} CollectionId: {1} and username/partition key: {2}. RETURNING NULL ITEMS.", id, collectionId);
+                    System.Diagnostics.Debug.WriteLine("ERROR FETCHING ITEM FROM COSMOSDB, with item id: {0} CollectionId: {1}. RETURNING NULL ITEM.", id, collectionId);
                     return null;
                 }
             }
@@ -93,17 +119,19 @@ namespace SportsDirect
         {
             try
             {
-                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBGraphClient.CosmosDBDatabaseName, collectionId, id));
+                await client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(CosmosDBClient.CosmosDBDatabaseName, collectionId, id));
             }
             catch (DocumentClientException e)
             {
                 if (e.StatusCode == HttpStatusCode.NotFound)
                 {
                     System.Diagnostics.Debug.WriteLine("ERROR DELETING ITEM IN COSMOSDB - ITEM DOES NOT EXIST - item id: {0} & CollectionId: {1}.", id, collectionId);
+                    return;
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("ERROR DELETING ITEM IN COSMOSDB, with item id: {0} & CollectionId: {1}.", id, collectionId);
+                    return;
                 }
             }
         }

@@ -46,28 +46,35 @@
             </div>
 
             <div class="row">
-            @foreach (var product in Model)
+            @if (Model != null)
             {
-                string imageURL = "https://sdneapp01prodsa01.blob.core.windows.net/productimages/" + product.ProductId + ".jpg";
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <a style="text-decoration:none; color:#4a4a4a" href="@Url.Action("Product", "Shop", new { selectedProductId = product.ProductId }, null)">
-                        <div class="card h-100">
-                            <img class="card-img-top" src="@imageURL" alt="@product.ProductName">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    @product.ProductName
-                                </h4>
-                                <h5>£@product.ProductCost</h5>
-                                <p class="card-text" style="overflow:hidden; max-height:70px;">@product.ProductDetails</p>
+                foreach (var product in Model)
+                {
+                    string imageURL = "https://sdneapp01prodsa01.blob.core.windows.net/productimages/" + product.ProductId + ".jpg";
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <a style="text-decoration:none; color:#4a4a4a" href="@Url.Action("Product", "Shop", new { selectedProductId = product.ProductId }, null)">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="@imageURL" alt="@product.ProductName">
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        @product.ProductName
+                                    </h4>
+                                    <h5>£@product.ProductCost</h5>
+                                    <p class="card-text" style="overflow:hidden; max-height:70px;">@product.ProductDetails</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                                </div>
                             </div>
-                            <div class="card-footer">
-                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                }
             }
-                
+            else
+            {
+                <p>Error loading products.</p>
+            }
+
             </div>
 
         </div>
