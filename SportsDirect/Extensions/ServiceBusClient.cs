@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Extensions.Logging;
 
 namespace SportsDirect
 {
@@ -29,6 +30,8 @@ namespace SportsDirect
             try
             {
                 var encodedMessage = new Message(Encoding.UTF8.GetBytes(message));
+                //Add a session ID which ensures first in first out (NOTE: receiver has to be configured to ingest this correctly)
+                encodedMessage.SessionId = Guid.NewGuid().ToString();
 
                 // Send the message to the queue.
                 await queueClient.SendAsync(encodedMessage);
@@ -36,7 +39,8 @@ namespace SportsDirect
             }
             catch (Exception exception)
             {
-                Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
+                string msg = $"{DateTime.Now} :: Exception: {exception.Message}";
+                throw new ApplicationException(msg);
             }
         }
     }   
